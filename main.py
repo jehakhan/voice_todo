@@ -5,9 +5,11 @@ from db import init_db, add_task, list_today_tasks, carry_forward
 import pyttsx3
 import time
 
+# Speak engine
 def speak(text):
     engine = pyttsx3.init()
     time.sleep(0.4)
+    print(text)
     engine.say(text)
     engine.runAndWait()
     engine.stop()
@@ -25,7 +27,6 @@ def listen_confirmation(retries=3):
         if confirm:
             return confirm.lower()
         else:
-            print("I could not understand. Please repeat.")
             speak("I could not understand. Please repeat.")
     return ""  # after max retries
 
@@ -33,12 +34,10 @@ def listen_confirmation(retries=3):
 
 def handle_task_lifecycle():
     """Complete lifecycle for a single trigger: listen -> parse -> confirm -> add/discard"""
-    print("Please say your task")
     speak("Please say your task")
     command = listen_once()
 
     if not command:
-        print("No command detected.")
         speak("No command detected.")
         return
 
@@ -49,27 +48,23 @@ def handle_task_lifecycle():
     print(f"Due: {due_date}")
 
     # Ask for confirmation
-    print(f"Do you want to add task: {task_text} due on {due_date}? Say yes or no.")
-    speak(f"Do you want to add task: {task_text} due on {due_date}?")
+    speak(f"Do you want to add task: {task_text} due on {due_date}? Say Yes or No")
     confirmation = listen_confirmation()
     if "yes" in confirmation:
         add_task(task_text, due_date)
-        print("✅ Task added successfully!")
         speak("Task added successfully!")
     else:
-        print("❌ Task discarded.")
         speak("Task discarded.")
 
     # List today's tasks
     today_tasks = list_today_tasks()
     if today_tasks:
-        print("\nToday's tasks:")
         speak("Here are your tasks for today.")
         for t in today_tasks:
             print("-", t[1])
             speak(t[1])
     else:
-        print("\nNo tasks for today.")
+        # print("\nNo tasks for today.")
         speak("You have no tasks for today.")
 
 

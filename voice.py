@@ -7,16 +7,16 @@ def listen_once():
     r.dynamic_energy_threshold = True
 
     with sr.Microphone() as source:
-        print("🎤 Speak clearly...")
+        print("Speak clearly...")
         r.adjust_for_ambient_noise(source, duration=0.5)
         audio = r.listen(source)
     try:
         text = normalize_command(r.recognize_google(audio))
-        print("🎙 Raw:", text)
+        print("Raw:", text)
         return str(text)
     except sr.UnknownValueError:
-        print("❌ Could not understand")
+        print("Could not understand")
         return ""
     except sr.RequestError as e:
-        print("❌ API error:", e)
+        print("API error:", e)
         return ""

@@ -28,7 +28,7 @@ def extract_task_and_date(text):
     """
     text_lower = text.lower()
 
-    # 1️⃣ Use search_dates to find date phrase
+    # Use search_dates to find date phrase
     results = search_dates(
         text_lower,
         settings={
@@ -51,18 +51,18 @@ def extract_task_and_date(text):
         due_date = datetime.now().date()
         task_text = text_lower
 
-    # 2️⃣ Remove numeric day references (4th, 22nd, etc.)
+    # Remove numeric day references (4th, 22nd, etc.)
     task_text = re.sub(DAY_NUMBER_PATTERN, "", task_text)
 
-    # 3️⃣ Remove month names and other date keywords
+    # Remove month names and other date keywords
     for k in DATE_KEYWORDS:
         task_text = re.sub(r"\b" + re.escape(k) + r"\b", "", task_text)
 
-    # 4️⃣ Remove filler phrases
+    # Remove filler phrases
     for phrase in FILLER_PHRASES:
         task_text = task_text.replace(phrase, "")
 
-    # 5️⃣ Collapse multiple spaces
+    # Collapse multiple spaces
     task_text = re.sub(r"\s+", " ", task_text).strip()
 
     return task_text, due_date
