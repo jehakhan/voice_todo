@@ -1,5 +1,6 @@
 from db import get_today_pending_tasks, mark_completed, mark_reminded
 from voice import listen_once
+import argparse
 import pyttsx3
 import time
 
@@ -33,14 +34,13 @@ def run_reminders(force):
 
         mark_reminded(task_id)
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--force", action="store_true", help="Force repeat reminders")
+    args = parser.parse_args()
+    print(args.force)
+    tasks = run_reminders(force=args.force)
 
-# if __name__ == "__main__":
-#     run_reminders()
-import argparse
-from db import get_today_pending_tasks
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--force", action="store_true", help="Force repeat reminders")
-args = parser.parse_args()
-print(args.force)
-tasks = run_reminders(force=args.force)
+if __name__ == "__main__":
+    main()
